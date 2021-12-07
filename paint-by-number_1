@@ -1,9 +1,32 @@
-var numCol = 20;
-var numRow = 20;
-var squareColors = ["Color1", "Color2"];
+var numCol = 15;
+var numRow = 15;
+var squareColors = [color(255, 255, 255), color(51, 51, 51), color(255, 0, 0)];
+var currentColor = 0;
+var currentScene = 0;
+var gridWidth = 350;
 
 var squares = [];
 
+//Array which contains the pattern for the finished heart image
+var finishedHeart = [
+    "000000000000000",
+    "001111000111100",
+    "012222101222210",
+    "122222212200221",
+    "122222222220221",
+    "122222222222221",
+    "122222222222221",
+    "012222222222210",
+    "001222222222100",
+    "000122222221000",
+    "000012222210000",
+    "000001222100000",
+    "000000121000000",
+    "000000010000000",
+    "000000000000000"
+].join("");
+
+//Gabriel's Bitmoji 
 function drawGabriel (bodyX,bodyY,bodyHeight) {
 //neck
     strokeWeight(1);
@@ -152,7 +175,7 @@ function drawGabriel (bodyX,bodyY,bodyHeight) {
     line(bodyX+(bodyHeight/50*2),bodyY-(bodyHeight/50*48),bodyX-(bodyHeight/50*8),bodyY-(bodyHeight/50*48));
 }
 
-//My Bitmoji//
+//Kerem's Bitmoji
 
 var drawBit=function(x,y,bitHeight) {
 
@@ -182,12 +205,27 @@ arc(x+(bitHeight/100*3),y+(bitHeight/100*25),bitHeight/100*30,bitHeight/100*30,1
 line(x-(bitHeight/100*14),y+(bitHeight/100*24),x+(bitHeight/100*19),y+(bitHeight/100*24));
 fill(155, 224, 184);
 rect(x+(bitHeight/100*42),y+(bitHeight/100*50),bitHeight/100*-80,bitHeight/100*87);
-fill(255,255,255);
-text("KE",x+(bitHeight/105*0),y+(bitHeight/100*60),x+(bitHeight/40*15),y+(bitHeight/40*15));
+fill(255, 255, 255);
+textSize(bitHeight/95*25);
+text("KE",x-(bitHeight/73*26),y+(bitHeight/30*15),bitHeight/50*50,bitHeight/50*50);
+
 };
 
 //Buttons
 var Button = function(config) {
+    this.scene = config.scene || 0;
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 150;
+    this.height = config.height || 50;
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+};
+
+var colorButton = function(config) {
+    this.scene = config.scene || 0;
+    this.color = config.color || color(255, 255, 255);
+    this.textColor = config.textColor || color(0, 0, 0);
     this.x = config.x || 0;
     this.y = config.y || 0;
     this.width = config.width || 150;
@@ -197,12 +235,22 @@ var Button = function(config) {
 };
 
 Button.prototype.draw = function() {
-    fill(255, 163, 211);
+    fill(255, 135, 135);
     rect(this.x, this.y, this.width, this.height, 5);
     fill(0, 0, 0);
     textSize(19);
-    textAlign(LEFT, TOP);
-    text(this.label, this.x+50, this.y+this.height/4);
+    textAlign(CENTER, TOP);
+    text(this.label, this.x+75, this.y+this.height/4);
+};
+
+colorButton.prototype.draw = function() {
+    fill(this.color);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(0, 0, 0);
+    textSize(19);
+    textAlign(CENTER, TOP);
+    fill(this.textColor);
+    text(this.label, this.x+30, this.y+this.height/4);
 };
 
 Button.prototype.isMouseInside = function() {
@@ -212,37 +260,207 @@ Button.prototype.isMouseInside = function() {
            mouseY < (this.y + this.height);
 };
 
+colorButton.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+Button.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()&&currentScene===this.scene) {
+        this.onClick();
+    }
+};
+
+colorButton.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()&&currentScene===this.scene) {
+        this.onClick();
+    }
+};
+
 var start = new Button({
+    scene:0,
     x:125,
     y:300,
     label: "Start",
     onClick: function() {
+        currentScene = 1;
+    }
+});
+
+var mainMenu = new Button({
+    scene:2,
+    x:125,
+    y:275,
+    label: "Main Menu",
+    onClick: function() {
+        currentScene = 0;
+    }
+});
+
+var whiteFill = new colorButton({
+    scene: 1,
+    color: squareColors[0],
+    textColor: color(0, 0, 0),
+    x: 11,
+    y: 345,
+    width: 65,
+    label: "0",
+    onClick: function() {
+        currentColor = 0;
+    }
+});
+
+var blackFill = new colorButton({
+    scene: 1,
+    color: squareColors[1],
+    textColor: color(255, 255, 255),
+    x: 125,
+    y: 345,
+    width: 65,
+    label: "1",
+    onClick: function() {
+        currentColor = 1;
+    }
+});
+
+var redFill = new colorButton({
+    scene: 1,
+    color: squareColors[2],
+    textColor: color(0, 0, 0),
+    x: 245,
+    y: 345,
+    width: 65,
+    label: "2",
+    onClick: function() {
+        currentColor = 2;
     }
 });
 
 //Home screen
 var homeScreen = function(){
-    background(255, 255, 255);
-    fill(255, 48, 155);
+    background(212, 212, 212);
+    fill(0, 0, 0);
     textSize(32);
-    text("Let's paint by number!", 40,120);
+    text("Let's paint by number!", 195,75);
     start.draw();
     drawGabriel(120,245,40);
     drawBit(271,195,70);
-
 };
 
-//Grid
+//Win screen
+var winScreen = function(){
+    background(255, 255, 255);
+    fill(255, 0, 0);
+    textSize(50);
+    text("You win!", 195, 100);
+    mainMenu.draw();
+};
+
+//Grid objects
 var Squares = function (x, y){
     this.x = x;
     this.y = y;
-    this.size = width/numCol;
-    this.label = "";
+    this.size = gridWidth/numCol;
+    this.label = finishedHeart[squares.length];
+    this.color = color(255, 255, 255);
+    this.index = squares.length;
 };
 
-homeScreen();
+Squares.prototype.draw = function() {
+    fill(this.color);
+    strokeWeight(1);
+    rect(this.x, this.y, this.size, this.size, 1);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    if(!this.complete){
+        fill(0, 0, 0);
+        text(this.label, this.x+this.size/2, this.y+this.size/2);
+    }
+};
+
+Squares.prototype.empty = function() {
+    return this.label === "";
+};
+
+Squares.prototype.onClick = function() {
+//If the label of the tile equals the label of color, fill the square and remove the number
+//If the label of the tile does not equal the label of the color, fill the square but leave the number
+
+    this.color = squareColors[currentColor];
+    
+    if(this.label === currentColor.toString()){
+        this.complete = true;
+    }
+    else {
+        this.complete = false;
+    }
+
+};
+
+ // Check for mouse clicks inside the tile
+Squares.prototype.handleMouseClick = function(x, y) {
+    if ( x >= this.x && x <= this.x + this.size && y >= this.y && y <= this.y + this.size)
+    {
+        this.onClick();
+    }
+};
+
+//For loop which draws the grid
+var drawSquares = function() {
+        for (var i in squares) {
+            squares[i].draw();
+        }
+};
+
+//For loop which fills the square array
+for (var i = 0; i < numCol; i++) {
+        for (var j = 0; j < numRow; j++) {
+            squares.push(new Squares(j * (gridWidth/numRow-1), i * (gridWidth/numRow-1)));
+        }
+}
+
+//Shows grid and buttons to change color
+var gameScreen = function(){
+    background(255, 255, 255);
+    drawSquares();
+    whiteFill.draw();
+    blackFill.draw();
+    redFill.draw();
+};
+
 
 //Allows mouse clicks
 mouseClicked = function() {
     start.handleMouseClick();
+    whiteFill.handleMouseClick();
+    blackFill.handleMouseClick();
+    redFill.handleMouseClick();
+    mainMenu.handleMouseClick();
+    for (var i in squares){
+        squares[i].handleMouseClick(mouseX,mouseY);
+    }
+    var completeCheck = true;
+    for (var i in squares){
+        if (!squares[i].complete){
+            completeCheck = false;
+        }
+    }
+    if(completeCheck){
+         currentScene = 2;
+    }
+};
+
+//Changes screen depending on the current scene number
+draw = function() {
+    if(currentScene === 0){
+        homeScreen();
+    }
+    else if(currentScene === 1){
+        gameScreen();
+    }
+    else if(currentScene === 2){
+        winScreen();
+    }
 };
