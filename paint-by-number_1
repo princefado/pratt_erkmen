@@ -1,0 +1,248 @@
+var numCol = 20;
+var numRow = 20;
+var squareColors = ["Color1", "Color2"];
+
+var squares = [];
+
+function drawGabriel (bodyX,bodyY,bodyHeight) {
+//neck
+    strokeWeight(1);
+    stroke (0, 0, 0);
+    fill(245, 234, 218);
+    rect(bodyX-(bodyHeight/50*11),bodyY-(bodyHeight/50*14),bodyHeight/50*25,bodyHeight/50*25);
+    rect(bodyX-(bodyHeight/50*32),bodyY+(bodyHeight/50*4),bodyHeight/50*59,bodyHeight/50*26);
+    noStroke();
+    triangle(bodyX+(bodyHeight/50*36),bodyY+(bodyHeight/50*8),bodyX-(bodyHeight/50*5),bodyY+(bodyHeight/50*37),bodyX-(bodyHeight/50*10),bodyY+(bodyHeight/50));
+//torso
+    strokeWeight(1);
+    fill(245, 234, 218);
+    noStroke();
+    ellipse(bodyX-(bodyHeight/50*30),bodyY+(bodyHeight/50*24),bodyHeight/50*27,bodyHeight/50*37);
+    fill(255, 0, 0);
+    stroke(0, 0, 0);
+    arc(bodyX-(bodyHeight/50*25),bodyY+(bodyHeight/50*18),bodyHeight/50*34,bodyHeight/50*42,162,322);
+    fill(255, 0, 0);
+    arc(bodyX-(bodyHeight/50*16),bodyY+(bodyHeight/50*25),bodyHeight/50*40,bodyHeight/50*32,50,250);
+    noStroke();
+    rect(bodyX-(bodyHeight/50*23),bodyY+(bodyHeight/50*10),bodyHeight/50*56,bodyHeight/50*31);
+    stroke(0, 0, 0);
+    fill(245, 234, 218);
+    ellipse(bodyX+(bodyHeight/50*38),bodyY+(bodyHeight/50*21),bodyHeight/50*32,bodyHeight/50*37);
+    fill(255, 0, 0);
+    stroke(0, 0, 0);
+    arc(bodyX+(bodyHeight/50*16),bodyY+(bodyHeight/50*25),bodyHeight/50*40,bodyHeight/50*32,80,190);
+    arc(bodyX+(bodyHeight/50*37),bodyY+(bodyHeight/50*13),bodyHeight/50*37,bodyHeight/50*42,162,363);
+    noStroke();
+    fill(245, 234, 218);
+    ellipse(bodyX+(bodyHeight/50*41),bodyY+(bodyHeight/50*33),bodyHeight/50*27,bodyHeight/50*21);
+
+//initials
+    fill(255, 196, 0);
+    textSize(bodyHeight/50*25);
+    text("GP",bodyX-(bodyHeight/50*26),bodyY+(bodyHeight/50*15),bodyHeight/50*50,bodyHeight/50*50);
+
+//face
+    stroke(0, 0, 0);
+    fill(245, 234, 218);
+    ellipse(bodyX,bodyY-(bodyHeight/50*41),bodyHeight/50*72,bodyHeight/50*82);
+//beautymark
+    fill(0, 0, 0);
+    ellipse(bodyX-(bodyHeight/50*12),bodyY-(bodyHeight/50*9),bodyHeight/50*1.5,bodyHeight/50*1.5);
+//upperlip
+    fill(255, 0, 0);
+    arc(bodyX,bodyY-(bodyHeight/50*17),bodyHeight/50*15,bodyHeight/50*10,207,343);
+//lowerlip
+    arc(bodyX,bodyY-(bodyHeight/50*17),bodyHeight/50*15,bodyHeight/50*10,-21,189);
+//ponytail
+    fill(59, 37, 0);
+    stroke(0, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*25),bodyY-(bodyHeight/50*83),bodyHeight/50*41,bodyHeight/50*52);
+    arc(bodyX+(bodyHeight/50*54),bodyY-(bodyHeight/50*75),bodyHeight/50*34,bodyHeight/50*66,25,229);
+    arc(bodyX+(bodyHeight/50*59),bodyY-(bodyHeight/50*64),bodyHeight/50*51,bodyHeight/50*78,25,229);
+    arc(bodyX+(bodyHeight/50*65),bodyY-(bodyHeight/50*23),bodyHeight/50*60,bodyHeight/50*60,67,234);
+//scalp
+    fill(59, 37, 0);
+    rect(bodyX-(bodyHeight/50*24),bodyY-(bodyHeight/50*94),bodyHeight/50*51,bodyHeight/50*26);
+    ellipse(bodyX,bodyY-(bodyHeight/50*82),bodyHeight/50*70,bodyHeight/50*42);
+//right ear
+    fill(245, 234, 218);
+    ellipse(bodyX+(bodyHeight/50*40),bodyY-(bodyHeight/50*40), bodyHeight/50*14,bodyHeight/50*21);
+//right earring
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*41),bodyY-(bodyHeight/50*33),bodyHeight/50*5,bodyHeight/50*5);
+    fill(255, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*43),bodyY-(bodyHeight/50*35),bodyHeight/50*5,bodyHeight/50*5);
+    fill(255, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*39),bodyY-(bodyHeight/50*35),bodyHeight/50*5,bodyHeight/50*5);
+//nose
+    stroke(0, 0, 0);
+    fill(245, 234, 218);
+    arc(bodyX-(bodyHeight/50*5),bodyY-(bodyHeight/50*33),bodyHeight/50*7,bodyHeight/50*9,-239,-92);
+//catearleft
+    fill(59, 37, 0);
+    arc(bodyX-(bodyHeight/50*9),bodyY-(bodyHeight/50*90),bodyHeight/50*60,bodyHeight/50*80,-208,-160);
+    noStroke();
+    fill(255, 209, 243);
+    arc(bodyX-(bodyHeight/50*18),bodyY-(bodyHeight/50*90),bodyHeight/50*35,bodyHeight/50*45,-208,-156);
+//catearright
+    stroke(0, 0, 0);
+    fill(59, 37, 0);
+    arc(bodyX+(bodyHeight/50*18),bodyY-(bodyHeight/50*80),bodyHeight/50*60,bodyHeight/50*80,-36, -5);
+    noStroke();
+    fill(255, 209, 243);
+    arc(bodyX+(bodyHeight/50*25),bodyY-(bodyHeight/50*90),bodyHeight/50*35,bodyHeight/50*45,-24,31);
+//bangs
+    stroke(0, 0, 0);
+    fill(255, 250, 250);
+    arc(bodyX-(bodyHeight/50*7),bodyY-(bodyHeight/50*83),bodyHeight/50*45, bodyHeight/50*50, 54,202);
+    fill(255, 250, 250);
+    arc(bodyX+(bodyHeight/50*8),bodyY-(bodyHeight/50*83),bodyHeight/50*45,bodyHeight/50*50,54,202);
+    fill(255, 250, 250);
+    arc(bodyX+(bodyHeight/50*25),bodyY-(bodyHeight/50*83),bodyHeight/50*45,bodyHeight/50*50,54,207);
+    noStroke();
+    fill(255, 250, 250);
+    ellipse(bodyX,bodyY-(bodyHeight/50*85),bodyHeight/50*51,bodyHeight/50*28);
+//lefteyewhite
+    stroke(0, 0, 0);
+    fill(255, 255, 255);
+    arc(bodyX+(bodyHeight/50*15),bodyY-(bodyHeight/50*39),bodyHeight/50*20,bodyHeight/50*25, 176,344);
+//righteyewhite
+    stroke(0, 0, 0);
+    fill(255, 255, 255);
+    arc(bodyX-(bodyHeight/50*18),bodyY-(bodyHeight/50*39),bodyHeight/50*20,bodyHeight/50*25, 184,365);
+//leftiris
+    stroke(0, 0, 0);
+    fill(255, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*19),bodyY-(bodyHeight/50*44),bodyHeight/50*10,bodyHeight/50*15);
+//rightiris
+    fill(255, 179, 0);
+    ellipse(bodyX-(bodyHeight/50*14),bodyY-(bodyHeight/50*44),bodyHeight/50*10,bodyHeight/50*15);
+//leftpupil
+    fill(0, 0, 0);
+    ellipse(bodyX+(bodyHeight/50*20),bodyY-(bodyHeight/50*45),bodyHeight/50*2,bodyHeight/50*7);
+//rightpupil
+    fill(0, 0, 0);
+    ellipse(bodyX-(bodyHeight/50*13),bodyY-(bodyHeight/50*45),bodyHeight/50*2,bodyHeight/50*7);
+//lefteyebrow
+    noFill();
+    strokeWeight(2);
+    stroke(0, 0, 0);
+    arc(bodyX-(bodyHeight/50*23),bodyY-(bodyHeight/50*62), bodyHeight/50*25,bodyHeight/50*10,-126,-26);
+//righteyebrow
+    noFill();
+    strokeWeight(2);
+    stroke(0, 0, 0);
+    arc(bodyX+(bodyHeight/50*17),bodyY-(bodyHeight/50*62),bodyHeight/50*25,bodyHeight/50*10,-146,-42);
+//mouth
+    arc(bodyX,bodyY-(bodyHeight/50*31),bodyHeight/50*25,bodyHeight/50*-30,-129,-42);
+//sidehairleft
+    stroke(0, 0, 0);
+    strokeWeight(1);
+    fill(59, 37, 0);
+    bezier(bodyX-(bodyHeight/50*28),bodyY-(bodyHeight/50*80),bodyX-(bodyHeight/50*76),bodyY-(bodyHeight/50*16),bodyX,bodyY-(bodyHeight/50*53),bodyX-(bodyHeight/50*37),bodyY+(bodyHeight/50*18));
+//sidehairright
+    bezier(bodyX+(bodyHeight/50*22),bodyY-(bodyHeight/50*100),bodyX+(bodyHeight/50*81),bodyY-(bodyHeight/50*12),bodyX-(bodyHeight/50*7),bodyY-(bodyHeight/50*55),bodyX+(bodyHeight/50*37),bodyY+(bodyHeight/50*18));
+//glasses
+    noFill();
+    strokeWeight(2);
+    stroke(255, 196, 0);
+    ellipse(bodyX-(bodyHeight/50*20),bodyY-(bodyHeight/50*43),bodyHeight/50*25,bodyHeight/50*25);
+    ellipse(bodyX+(bodyHeight/50*16),bodyY-(bodyHeight/50*43),bodyHeight/50*25,bodyHeight/50*25);
+    line(bodyX+(bodyHeight/50*2),bodyY-(bodyHeight/50*48),bodyX-(bodyHeight/50*8),bodyY-(bodyHeight/50*48));
+}
+
+//My Bitmoji//
+
+var drawBit=function(x,y,bitHeight) {
+
+noStroke();
+fill(255, 224, 189);
+ellipse(x,y, bitHeight/100*76,bitHeight/100*100);//head
+fill(0, 0, 0);
+quad(x-(bitHeight/100*42),y-(bitHeight/100*8),x-(bitHeight/100*35),y-(bitHeight/100*23),x-(bitHeight/100*20),y-(bitHeight/100*37),x-(bitHeight/100*30),y-(bitHeight/100*3));
+quad(x+(bitHeight/100*40),y-(bitHeight/100*8),x+(bitHeight/100*34),y-(bitHeight/100*23),x+(bitHeight/100*21),y-(bitHeight/100*37),x+(bitHeight/100*29),y-(bitHeight/100*3));
+fill(255, 0, 0);
+arc(x,y-(bitHeight/100*30),bitHeight/100*65,bitHeight/100*80,-180,0);
+fill(0,0,0);
+arc(x,y-(bitHeight/100*35),bitHeight/100*30,bitHeight/100*33,-180,0);
+fill(255, 255, 255);
+stroke(5,5,5);
+ellipse(x+(bitHeight/100*16),y-(bitHeight/100*11),bitHeight/100*10,bitHeight/100*10);//right eye
+ellipse(x-(bitHeight/100*16),y-(bitHeight/100*11),(bitHeight/100*10),(bitHeight/100*10));//left eye
+strokeWeight(2);
+fill(168, 180, 97);
+point(x+(bitHeight/100*16),y-(bitHeight/100*11));
+point(x-(bitHeight/100*16),y-(bitHeight/100*11));
+strokeWeight(2);
+fill(255, 224, 189);
+bezier(x+(bitHeight/100*4),y-(bitHeight/100*12),x-(bitHeight/100*22),y-(bitHeight/100*40),x+(bitHeight/100*45),y+(bitHeight/100*34),x-(bitHeight/100*1),y);
+fill(255, 255, 255);
+arc(x+(bitHeight/100*3),y+(bitHeight/100*25),bitHeight/100*30,bitHeight/100*30,1,180);
+line(x-(bitHeight/100*14),y+(bitHeight/100*24),x+(bitHeight/100*19),y+(bitHeight/100*24));
+fill(155, 224, 184);
+rect(x+(bitHeight/100*42),y+(bitHeight/100*50),bitHeight/100*-80,bitHeight/100*87);
+fill(255,255,255);
+text("KE",x+(bitHeight/105*0),y+(bitHeight/100*60),x+(bitHeight/40*15),y+(bitHeight/40*15));
+};
+
+//Buttons
+var Button = function(config) {
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 150;
+    this.height = config.height || 50;
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+};
+
+Button.prototype.draw = function() {
+    fill(255, 163, 211);
+    rect(this.x, this.y, this.width, this.height, 5);
+    fill(0, 0, 0);
+    textSize(19);
+    textAlign(LEFT, TOP);
+    text(this.label, this.x+50, this.y+this.height/4);
+};
+
+Button.prototype.isMouseInside = function() {
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+var start = new Button({
+    x:125,
+    y:300,
+    label: "Start",
+    onClick: function() {
+    }
+});
+
+//Home screen
+var homeScreen = function(){
+    background(255, 255, 255);
+    fill(255, 48, 155);
+    textSize(32);
+    text("Let's paint by number!", 40,120);
+    start.draw();
+    drawGabriel(120,245,40);
+    drawBit(271,195,70);
+
+};
+
+//Grid
+var Squares = function (x, y){
+    this.x = x;
+    this.y = y;
+    this.size = width/numCol;
+    this.label = "";
+};
+
+homeScreen();
+
+//Allows mouse clicks
+mouseClicked = function() {
+    start.handleMouseClick();
+};
