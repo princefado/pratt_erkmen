@@ -1,15 +1,63 @@
 var numCol = 15;
 var numRow = 15;
-var squareColors = [color(255, 255, 255), color(51, 51, 51), color(255, 0, 0)];
+var squareColors = [color(255, 255, 255), color(51, 51, 51), color(230, 55, 55), color(247, 235, 74), color(59, 203, 255), color(103, 196, 67)];
 var currentColor = 0;
 var currentScene = 0;
 var gridWidth = 350;
 
 var squares = [];
 
+//Creates the squares objects
+var Squares = function (x, y, label){
+    this.x = x;
+    this.y = y;
+    this.size = gridWidth/numCol;
+    this.label = label;
+    this.color = color(255, 255, 255);
+    this.index = squares.length;
+};
+
 //Array which contains the pattern for the finished heart image
 var finishedHeart = [
     "000000000000000",
+    "001111000111100",
+    "012222101222210",
+    "122222212200221",
+    "122222222220221",
+    "122222222222221",
+    "122222222222221",
+    "012222222222210",
+    "001222222222100",
+    "000122222221000",
+    "000012222210000",
+    "000001222100000",
+    "000000121000000",
+    "000000010000000",
+    "000000000000000"
+].join("");
+
+//Array which contains the pattern for the finished image done by Gabriel
+var finishedGabriel = [
+    "333434444444444",
+    "333444111444000",
+    "333431222140000",
+    "444411222110000",
+    "343122212221000",
+    "444122131221400",
+    "444412212214444",
+    "444001222144444",
+    "400000121044444",
+    "000011111004444",
+    "400155151014444",
+    "440015151151444",
+    "444441151551444",
+    "111111151511111",
+    "555555151155555"
+].join("");
+
+//Array which contains the pattern for the finished image done by Kerem
+var finishedKerem = [
+    "100000000000000",
     "001111000111100",
     "012222101222210",
     "122222212200221",
@@ -176,7 +224,6 @@ function drawGabriel (bodyX,bodyY,bodyHeight) {
 }
 
 //Kerem's Bitmoji
-
 var drawBit=function(x,y,bitHeight) {
 
 noStroke();
@@ -211,17 +258,19 @@ text("KE",x-(bitHeight/73*26),y+(bitHeight/30*15),bitHeight/50*50,bitHeight/50*5
 
 };
 
-//Buttons
+//Base object for start/menu buttons. When clicked, each button intiates a for loop which adds the finished array into the grid. 
 var Button = function(config) {
     this.scene = config.scene || 0;
+    this.color = config.color || color(255, 255, 255);
     this.x = config.x || 0;
     this.y = config.y || 0;
-    this.width = config.width || 150;
+    this.width = config.width || 120;
     this.height = config.height || 50;
     this.label = config.label || "Click";
     this.onClick = config.onClick || function() {};
 };
 
+//Base object for the buttons in the game screen which change your fill color.
 var colorButton = function(config) {
     this.scene = config.scene || 0;
     this.color = config.color || color(255, 255, 255);
@@ -235,12 +284,12 @@ var colorButton = function(config) {
 };
 
 Button.prototype.draw = function() {
-    fill(255, 135, 135);
+    fill(this.color);
     rect(this.x, this.y, this.width, this.height, 5);
     fill(0, 0, 0);
     textSize(19);
     textAlign(CENTER, TOP);
-    text(this.label, this.x+75, this.y+this.height/4);
+    text(this.label, this.x+60, this.y+this.height/4);
 };
 
 colorButton.prototype.draw = function() {
@@ -250,7 +299,7 @@ colorButton.prototype.draw = function() {
     textSize(19);
     textAlign(CENTER, TOP);
     fill(this.textColor);
-    text(this.label, this.x+30, this.y+this.height/4);
+    text(this.label, this.x+25, this.y+this.height/4);
 };
 
 Button.prototype.isMouseInside = function() {
@@ -279,12 +328,53 @@ colorButton.prototype.handleMouseClick = function() {
     }
 };
 
-var start = new Button({
+var startHeart = new Button({
+    color: color(255, 163, 163),
     scene:0,
-    x:125,
-    y:300,
-    label: "Start",
+    x:140,
+    y:315,
+    label: "Heart",
     onClick: function() {
+        squares = [];
+        for (var i = 0; i < numCol; i++) {
+        for (var j = 0; j < numRow; j++) {
+            squares.push(new Squares(j * (gridWidth/numRow-1), i * (gridWidth/numRow-1), (finishedHeart[squares.length])));
+        }
+}
+        currentScene = 1;
+    }
+});
+
+var startGabriel = new Button({
+    color: color(186, 255, 163),
+    scene:0,
+    x:10,
+    y:315,
+    label: "Flower",
+    onClick: function() {
+        squares = [];
+        for (var i = 0; i < numCol; i++) {
+        for (var j = 0; j < numRow; j++) {
+            squares.push(new Squares(j * (gridWidth/numRow-1), i * (gridWidth/numRow-1), (finishedGabriel[squares.length])));
+        }
+}
+        currentScene = 1;
+    }
+});
+
+var startKerem = new Button({
+    color: color(255, 163, 163),
+    scene:0,
+    x:270,
+    y:315,
+    label: "Kerem",
+    onClick: function() {
+        squares = [];
+        for (var i = 0; i < numCol; i++) {
+        for (var j = 0; j < numRow; j++) {
+            squares.push(new Squares(j * (gridWidth/numRow-1), i * (gridWidth/numRow-1), (finishedKerem[squares.length])));
+        }
+}
         currentScene = 1;
     }
 });
@@ -303,9 +393,9 @@ var whiteFill = new colorButton({
     scene: 1,
     color: squareColors[0],
     textColor: color(0, 0, 0),
-    x: 11,
+    x: 10,
     y: 345,
-    width: 65,
+    width: 50,
     label: "0",
     onClick: function() {
         currentColor = 0;
@@ -316,9 +406,9 @@ var blackFill = new colorButton({
     scene: 1,
     color: squareColors[1],
     textColor: color(255, 255, 255),
-    x: 125,
+    x: 70,
     y: 345,
-    width: 65,
+    width: 50,
     label: "1",
     onClick: function() {
         currentColor = 1;
@@ -329,12 +419,51 @@ var redFill = new colorButton({
     scene: 1,
     color: squareColors[2],
     textColor: color(0, 0, 0),
-    x: 245,
+    x: 130,
     y: 345,
-    width: 65,
+    width: 50,
     label: "2",
     onClick: function() {
         currentColor = 2;
+    }
+});
+
+var yellowFill = new colorButton({
+    scene: 1,
+    color: squareColors[3],
+    textColor: color(0, 0, 0),
+    x: 190,
+    y: 345,
+    width: 50,
+    label: "3",
+    onClick: function() {
+        currentColor = 3;
+    }
+});
+
+var blueFill = new colorButton({
+    scene: 1,
+    color: squareColors[4],
+    textColor: color(0, 0, 0),
+    x: 250,
+    y: 345,
+    width: 50,
+    label: "4",
+    onClick: function() {
+        currentColor = 4;
+    }
+});
+
+var greenFill = new colorButton({
+    scene: 1,
+    color: squareColors[5],
+    textColor: color(0, 0, 0),
+    x: 310,
+    y: 345,
+    width: 50,
+    label: "5",
+    onClick: function() {
+        currentColor = 5;
     }
 });
 
@@ -344,30 +473,17 @@ var homeScreen = function(){
     fill(0, 0, 0);
     textSize(32);
     text("Let's paint by number!", 195,75);
-    start.draw();
+    textSize(20);
+    text("Pick a shape to get started!",200,115);
+    startHeart.draw();
+    startKerem.draw();
+    startGabriel.draw();
     drawGabriel(120,245,40);
     drawBit(271,195,70);
 };
 
-//Win screen
-var winScreen = function(){
-    background(255, 255, 255);
-    fill(255, 0, 0);
-    textSize(50);
-    text("You win!", 195, 100);
-    mainMenu.draw();
-};
 
-//Grid objects
-var Squares = function (x, y){
-    this.x = x;
-    this.y = y;
-    this.size = gridWidth/numCol;
-    this.label = finishedHeart[squares.length];
-    this.color = color(255, 255, 255);
-    this.index = squares.length;
-};
-
+//Prototype which defines the size of the squares and changes their color but keeps the text if they are filled in with the wrong color
 Squares.prototype.draw = function() {
     fill(this.color);
     strokeWeight(1);
@@ -407,19 +523,12 @@ Squares.prototype.handleMouseClick = function(x, y) {
     }
 };
 
-//For loop which draws the grid
+//Function which, when called, does a for loop which draws the grid
 var drawSquares = function() {
         for (var i in squares) {
             squares[i].draw();
         }
 };
-
-//For loop which fills the square array
-for (var i = 0; i < numCol; i++) {
-        for (var j = 0; j < numRow; j++) {
-            squares.push(new Squares(j * (gridWidth/numRow-1), i * (gridWidth/numRow-1)));
-        }
-}
 
 //Shows grid and buttons to change color
 var gameScreen = function(){
@@ -428,15 +537,23 @@ var gameScreen = function(){
     whiteFill.draw();
     blackFill.draw();
     redFill.draw();
+    yellowFill.draw();
+    blueFill.draw();
+    greenFill.draw();
 };
 
 
-//Allows mouse clicks
+//Allows mouse clicks. Also checks that each square has been filled with the appropriate label. If the squares have been filled, it takes to you to the win screen where you can return to the main menu.
 mouseClicked = function() {
-    start.handleMouseClick();
+    startHeart.handleMouseClick();
+    startKerem.handleMouseClick();
+    startGabriel.handleMouseClick();
     whiteFill.handleMouseClick();
     blackFill.handleMouseClick();
     redFill.handleMouseClick();
+    yellowFill.handleMouseClick();
+    blueFill.handleMouseClick();
+    greenFill.handleMouseClick();
     mainMenu.handleMouseClick();
     for (var i in squares){
         squares[i].handleMouseClick(mouseX,mouseY);
@@ -448,11 +565,12 @@ mouseClicked = function() {
         }
     }
     if(completeCheck){
+         currentColor = 0;
          currentScene = 2;
     }
 };
 
-//Changes screen depending on the current scene number
+//Changes screen depending on the current scene number, and also triggers win message which allows you to go back to the main screen
 draw = function() {
     if(currentScene === 0){
         homeScreen();
@@ -461,6 +579,11 @@ draw = function() {
         gameScreen();
     }
     else if(currentScene === 2){
-        winScreen();
+        fill(255, 255, 255);
+        rect(0,200,400,50);
+        fill(255, 0, 0);
+        textSize(50);
+        text("Good job!", 200, 195);
+        mainMenu.draw();
     }
 };
