@@ -558,15 +558,17 @@ mouseClicked = function() {
     for (var i in squares){
         squares[i].handleMouseClick(mouseX,mouseY);
     }
-    var completeCheck = true;
-    for (var i in squares){
-        if (!squares[i].complete){
-            completeCheck = false;
+    if (squares.length !== 0) {
+        var completeCheck = true;
+        for (var i in squares){
+            if (!squares[i].complete){
+                completeCheck = false;
+            }
         }
-    }
-    if(completeCheck){
-         currentColor = 0;
-         currentScene = 2;
+        if(completeCheck){
+             currentColor = 0;
+             currentScene = 2;
+        }
     }
 };
 
