@@ -565,7 +565,7 @@ mouseClicked = function() {
                 completeCheck = false;
             }
         }
-        if(completeCheck){
+        if(completeCheck&&currentScene===1){
              currentColor = 0;
              currentScene = 2;
         }
